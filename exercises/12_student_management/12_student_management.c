@@ -16,12 +16,24 @@ int main() {
     }
     
     Student *students[3];
-    
+    //只是创建了一个指针
+   // fread(students, sizeof(Student), 3, file);
+   char line[100];
+
     for (int i = 0; i < 3; i++) 
     {
 	    // TODO: 在这里添加你的代码
-        // I AM NOT DONE
+        fgets(line, 50, file);
+        printf("%s", line);
+        students[i] = malloc(sizeof(Student));
+        //需要分配内存再能把数据拷贝进去 否则拷贝不了
+        
+
+        int count = sscanf(line, "%s %s %d",students[i]->id , students[i]->name,&(students[i]->age));
+        printf("count %d\n", count);
+        
     }
+
     fclose(file);
     
     for (int i = 0; i < 3; i++) 

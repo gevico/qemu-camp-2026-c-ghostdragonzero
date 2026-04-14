@@ -3,11 +3,25 @@
 // TODO：定义四则运算规则
 // hint：似乎除数有一些特殊情况，需要处理
 
-// I AM NOT DONE
-int add(int a, int b) {  }
-int subtract(int a, int b) {  }
-int multiply(int a, int b) {  }
-int divide(int a, int b) {  }
+int add(int a, int b) { 
+    return a + b;
+ }
+int subtract(int a, int b) { 
+    return a - b;
+ }
+int multiply(int a, int b) { 
+    return a * b;
+ }
+int divide(int a, int b) { 
+    if( b == 0){
+        printf("error zerro\n");
+        return 0;
+
+    }
+   
+
+    return a /b;
+ }
 
 
 
@@ -17,7 +31,7 @@ int main() {
 
     // TODO
     // hint:这是一个函数指针数组，在这之前应该先定义指针
-    int ()() = {add, subtract, multiply, divide};
+    int (*f[])(int , int) = {add, subtract, multiply, divide};
 
     char operators[] = "+-*/";
 
@@ -38,7 +52,7 @@ int main() {
         return 1;
     }
 
-    int result = operations[index](a, b);
+    int result = f[index](a, b);
     printf("%d %c %d = %d\n", a, op, b, result);
 
     return 0;

@@ -16,8 +16,18 @@ int n;
 
 int binary_search(const char *target_name) {
     // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    for (int i = 0 ; i < MAX_STUDENTS; i++){
+        printf("%s  tartget %s\n", students[i].name, target_name);
+        int j = 0;
+        while(students[i].name[j] != '\0' && students[i].name[j] ==target_name[j])
+            j++;
+        //判断字符数组是否一致
+        if (j != 0 && students[i].name[j] == '\0')
+            return i;
+    }
+    return -1;
 }
+
 
 int main(void) {
     // 打开文件读取已排序的学生信息

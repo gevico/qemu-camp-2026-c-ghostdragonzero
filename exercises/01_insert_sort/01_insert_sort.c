@@ -9,8 +9,21 @@ typedef struct {
 
 void insertion_sort(Student students[], int n) {
     // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    int i ,j;
+    for (i = 1; i < n ;i++){
+        Student key = students[i];
+        j = i - 1;
+        while(j >= 0 && students[j].score < key.score){
+            students[j + 1] = students[i];
+            j--;
+        }
+        students[j + 1] = key;
+        //why +1  because up use j-- so the last time j point
+        //the fist no need change number
+        
+    }
 }
+
 
 int main(void) {
     FILE *file;

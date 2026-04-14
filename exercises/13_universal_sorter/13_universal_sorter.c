@@ -41,7 +41,35 @@ void processFile(const char *filename) {
 
     switch (choice) {
         // TODO: 在这里添加你的代码
-        // I AM NOT DONE
+        case 1:
+        {
+        int num[n];
+        for(int i = 0; i < n; i++){
+            fscanf(fin, "%d", &(num[i]));
+        }
+        sort(num, n, sizeof(int), compareInt);
+        for(int i = 0; i < n; i++){
+            printf("%d ", num[i]);
+        }
+        printf("\n ");
+        break;
+        }
+
+
+        case 2:{
+            float num[n];
+            for(int i = 0; i < n; i++){
+                fscanf(fin, "%f", &(num[i]));
+            }
+            sort(num, n, sizeof(float), compareFloat);
+            for(int i = 0; i < n; i++){
+                printf("num %f\n", num[i]);
+            }
+        
+            break;
+        }
+
+        
     }
 
     fclose(fin);

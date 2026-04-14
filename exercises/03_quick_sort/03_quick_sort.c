@@ -12,11 +12,42 @@ typedef struct {
 
 Student students[MAX_STUDENTS];
 
-void quick_sort(int left, int right) {
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+int partition(int left, int right)
+{
+    Student mid = students[left];
+    int n1= right -left + 1;
+    Student temp[n1];
+    int i = 0;
+    int where = 0;
+    for (int j = left + 1 ; j <= right; j++){
+        if(students[j].score > mid.score){
+            where++;
+            temp[i++] = students[j];
+        }
+    }
+    temp[i++] = mid;
+    for (int j = left + 1; j <= right; j++){
+        if(students[j].score < mid.score){
+            temp[i++] = students[j];
+        }
+    }
+    for (int j = left; j <= right; j++){
+        students[j] = temp[j -left];
+    }
+
+    return left + where;
+
 }
 
+void quick_sort(int left, int right) {
+    // TODO: 在这里添加你的代码
+    int mid;
+    if (left < right){
+        mid = partition(left, right);
+        quick_sort(left, mid-1);
+        quick_sort(mid + 1, right);
+    }
+}
 int main(void) {
     FILE *file = fopen("03_students.txt", "r");
     if (!file) {

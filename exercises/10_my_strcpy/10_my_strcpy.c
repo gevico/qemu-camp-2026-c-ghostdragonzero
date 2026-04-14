@@ -5,7 +5,11 @@ int main() {
     char destination[101];
     
 	// TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    int i = 0;
+    while(source[i] != '\0'){
+        destination[i] = source[i];
+        i++;
+    }
     
     printf("拷贝后的字符串: %s", destination);
     
