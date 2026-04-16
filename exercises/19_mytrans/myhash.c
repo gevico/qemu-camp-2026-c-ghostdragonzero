@@ -54,10 +54,24 @@ int hash_table_insert(HashTable *table, const char *key, const char *value) {
     return 0;
 
   unsigned long hash = hash_function(key) % HASH_TABLE_SIZE;
-  HashNode *node = table->buckets[hash];
+  
+  //printf("%s\n hash %d \n%s\n", key,hash, value);
+  HashNode *new = malloc(sizeof(HashNode));
+  //这里因为结构体里还是指针所以还是不能直接用strcpy来拷贝
+  new->key = strdup(key);
+  new->value = strdup(value);
+  //这里不能直接用key 由于key是局部变量要拷贝过去
+  new->next = NULL;
+  
+  //这里我创建了一个指向节点指针
+  if (table->buckets[hash] == NULL){
+    //printf("add new node\n");
+    table->buckets[hash] = new;
+  }else{
+    new->next= table->buckets[hash];
+    table->buckets[hash] = new;
+  }
 
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
 
   return 1;
 }
@@ -70,8 +84,12 @@ const char *hash_table_lookup(HashTable *table, const char *key) {
   unsigned long hash = hash_function(key) % HASH_TABLE_SIZE;
   HashNode *node = table->buckets[hash];
 
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+  while(node){
+    if(strcmp(node->key, key) == 0){
+      return node->value;
+    }
+    node = node->next;
+  }
 
   return NULL; // 未找到
 }

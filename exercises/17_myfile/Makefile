@@ -4,11 +4,12 @@ CFLAGS = -Wall -g -O2 -fPIE
 TARGET := 17_myfile
 SRCS := 17_myfile.c
 OBJS := $(SRCS:.c=.o)
+#吧SRC中的c后缀改成o
 
 all: $(TARGET)
+	gcc -c $(SRCS)
+	gcc $(OBJS) -o $(TARGET)
 
-# TODO: 在这里添加你的代码
-# I AM NOT DONE
 
 clean:
 	rm -f $(TARGET) $(OBJS)

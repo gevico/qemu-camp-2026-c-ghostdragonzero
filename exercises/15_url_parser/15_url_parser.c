@@ -11,9 +11,21 @@
 
 int parse_url(const char* url) {
     int err = 0;
+    char *url_new = malloc(strlen(url));
+    memcpy(url_new, url, strlen(url));
+    //因为是const 先拷贝才能使用strtok  因为strtok会修改字符串
+    
 
     // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    char *token;
+    token = strtok(url_new, "?");
+    if (token == NULL)
+        return err;
+    while((token = strtok(NULL, "=")) != NULL){
+        char * value;
+        value = strtok(NULL, "&");
+        printf("key = %s, value = %s\n", token, value);
+    }
 
 exit:
     return err;
