@@ -23,20 +23,41 @@ char to_lower(char c) { return tolower(c); }
 
 // 添加单词到哈希表
 void add_word(WordCount **hash_table, const char *word) {
-  unsigned int index = hash(word);
-  WordCount *entry = hash_table[index];
-
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+  // TODO: 在这里添加你的代码
+  unsigned int hash_nume = hash(word);
+  int i  = 0;
+  if(hash_table[hash_nume]== NULL){
+    hash_table[hash_nume] = malloc(sizeof(WordCount));
+    while(word[i] != '\0'){
+      hash_table[hash_nume]->word[i] = word[i];
+      i++;
+    }
+    hash_table[hash_nume]->word[i] = word[i];
+    
+    hash_table[hash_nume]->count = 1;
+  }else{
+    hash_table[hash_nume]->count +=1;
+  }
 }
 
 // 打印单词统计结果
+/**
+ * @brief 打印哈希表中所有单词的统计信息
+ * 
+ * 遍历哈希表并输出每个单词及其出现次数。
+ * 
+ * @param hash_table 指向哈希表的指针数组，每个元素指向 WordCount 结构
+ */
 void print_word_counts(WordCount **hash_table) {
   printf("Word Count Statistics:\n");
   printf("======================\n");
+  for(int i = 0 ; i < HASH_SIZE; i++){
+    if (hash_table[i] != NULL){
+      printf("%-21s%d\n", hash_table[i]->word, hash_table[i]->count);
+    }
+  }
 
-    // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+
 }
 
 // 释放哈希表内存
@@ -87,7 +108,7 @@ void process_file(const char *filename) {
 
   fclose(file);
   print_word_counts(hash_table);
-  wc_free_hash_table(hash_table);
+  //wc_free_hash_table(hash_table);
 }
 
 int __cmd_mywc(const char* filename) {

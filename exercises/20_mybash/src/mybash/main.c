@@ -59,7 +59,6 @@ int is_builtin_command(char **args) {
     return 0;
 
   // TODO: 在这里添加你的代码
-  // I AM NOT DONE
 
   return 0;
 }
@@ -71,14 +70,44 @@ int parse_input(char *input, char **args) {
   char *arg_start = NULL;
   char arg_buf[MAX_INPUT];  // 临时存储当前正在解析的参数
   int arg_buf_idx = 0;
+  int string = 0;
 
   memset(arg_buf, 0, sizeof(arg_buf));
 
   while (*buf != '\0' && i < MAX_ARGS - 1) {
       char c = *buf;
 
-        // TODO: 在这里添加你的代码
-        // I AM NOT DONE
+      if(string == 1){
+        if (c == '"'){
+          arg_buf[arg_buf_idx++] = '\0';
+          arg_buf_idx = 0;
+          string = 0;
+        //printf("what is ar %s",arg_buf);
+          args[i++] = strdup(arg_buf);
+          continue;
+        }
+        arg_buf[arg_buf_idx++] = c;
+        buf++;
+        continue;
+      }
+      if(string == 0 && c == '"'){
+        string = 1;
+        buf++;
+        continue;
+      }
+
+      if(*buf == ' ' && arg_buf_idx!= 0){
+        arg_buf[arg_buf_idx++] = '\0';
+        arg_buf_idx = 0;
+        //printf("what is ar %s",arg_buf);
+        args[i++] = strdup(arg_buf);
+      }
+      if(*buf == ' ' && arg_buf_idx == 0){
+        buf++;
+        continue;
+      }
+
+      arg_buf[arg_buf_idx++] = c;
 
       buf++;
   }
@@ -117,10 +146,12 @@ int main(int argc, char *argv[]) {
       input[strcspn(input, "\n")] = '\0';
 
       int argc_parsed = parse_input(input, args);
+      //这里没有解析完成所有没有往后走
 
       if (argc_parsed == 0) {
         continue;  // 空行
       }
+      //printf("mybash: reading commands from file '%s'\n", input);
 
       // 处理内置命令
       if (is_builtin_command(args)) {
@@ -155,6 +186,7 @@ int main(int argc, char *argv[]) {
         fprintf(stderr, "mybash: command not found: %s\n", cmd_name);
       }
     }
+    printf("close file\n");
 
     fclose(file);
     return 0;
@@ -182,8 +214,15 @@ int main(int argc, char *argv[]) {
         continue;
       }
 
+
+
       const char *cmd_name = args[0];
-      const char *cmd_arg = (argc >= 2) ? args[1] : NULL;
+      const char *cmd_arg1 = (argc >= 2) ? args[1] : NULL;
+      const char *cmd_arg2 = (argc >= 3) ? args[2] : NULL;
+
+      printf("cmd_name: %s\n", cmd_name);
+      printf("cmd_arg1: %s\n", cmd_arg1);
+      printf("cmd_arg2: %s\n", cmd_arg2);
 
       int found = 0;
       for (Command *cmd = commands; cmd->name != NULL; cmd++) {
@@ -192,13 +231,14 @@ int main(int argc, char *argv[]) {
           if (cmd->is_arg_required == 0) {
             cmd->func.func_0();
           } else if (cmd->is_arg_required == 1) {
-            cmd->func.func_1(cmd_arg);
+            cmd->func.func_1(cmd_arg1);
           } else if (cmd->is_arg_required == 2) {
-            cmd->func.func_2(cmd_arg, cmd_arg);
+            cmd->func.func_2(cmd_arg1, cmd_arg2);
           }
           break;
         }
       }
+
 
       if (!found) {
         fprintf(stderr, "mybash: command not found: %s\n", cmd_name);

@@ -7,13 +7,15 @@
 # =============================================
 
 PWD := $(shell pwd)
+export OBJDIR_PATH := $(PWD)/obj
+export BINDIR := $(PWD)/bin
 
 # 所有子模块目录（静态库：生成 .a）
 SUBDIRS := \
-	mysed \
-	myfile \
-	mywc \
-	mytrans
+	src/mysed \
+	src/myfile \
+	src/mywc \
+	src/mytrans
 
 # 默认目标：构建 mybash（依赖其他库）
 all: mybash
@@ -21,16 +23,20 @@ all: mybash
 # 通用规则：构建每个子模块（静态库）
 $(SUBDIRS):
     # TODO: 在这里添加你的代码
-    # I AM NOT DONE
+	$(MAKE) -C $@
 
 # 构建 mybash（可执行文件，依赖上面的库）
 mybash: $(SUBDIRS)
 	# TODO: 在这里添加你的代码
-    # I AM NOT DONE
+	$(MAKE) -C src/mybash
 
 # 清理所有生成的文件
 clean:
     # TODO: 在这里添加你的代码
-    # I AM NOT DONE
+	@echo "Cleaning all subdirectories..."
+	@for dir in $(SUBDIRS) mybash; do \
+		$(MAKE) -C $$dir clean; \
+	done
+	@rm -rf bin obj
 
 .PHONY: all $(SUBDIRS) mybash clean

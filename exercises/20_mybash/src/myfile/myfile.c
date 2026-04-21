@@ -39,9 +39,35 @@ int __cmd_myfile(const char* filename) {
     printf("filepath: %s\n", filepath);
 
     // TODO: 在这里添加你的代码
-    // I AM NOT DONE
+    
+      //printf("Analyzing file: %s\n", filepath);
+      
+      // 1. 打开文件
+      fd = open(filepath, O_RDONLY);
+      if (fd < 0) {
+        perror("open");
+      }
+  
+      // 2. 读取 ELF 文件头
+      // ELF 文件头位于文件最开始处，大小为一个 Elf64_Ehdr 结构体
+      ssize_t bytes_read = read(fd, &ehdr, sizeof(Elf64_Ehdr));
+      if (bytes_read != sizeof(Elf64_Ehdr)) {
+        perror("read");
+
+      }
+  
+      // 3. 校验魔数 (Magic Number)
+      // ELF 文件的前4个字节必须是 0x7f, 'E', 'L', 'F'
+      if (ehdr.e_ident[EI_MAG0] != ELFMAG0 || 
+          ehdr.e_ident[EI_MAG1] != ELFMAG1 || 
+          ehdr.e_ident[EI_MAG2] != ELFMAG2 || 
+          ehdr.e_ident[EI_MAG3] != ELFMAG3) {
+        printf("Not a valid ELF file.\n\n");
+
+      }
 
     print_elf_type(ehdr.e_type);
     close(fd);
+    
     return 0;
 }
